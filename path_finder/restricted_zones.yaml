@@ -1,0 +1,130 @@
+# ─────────────────────────────────────────────────────────────
+# Pune Drone Operations — Restricted Zones Config
+# ─────────────────────────────────────────────────────────────
+# Format rules:
+#   - All coordinates: (latitude, longitude)
+#   - radius_m: circular zone radius in metres
+#   - polygon: list of (lat, lng) points (auto-closed)
+#   - active_from / active_until: ISO format "YYYY-MM-DD HH:MM"
+#     Leave blank ("") for permanent zones
+#   - type: airport | military | custom | temporary
+#   - hard_block: true  = completely impassable (cell value = 2)
+#                 false = high cost penalty (drone avoids but can enter)
+# ─────────────────────────────────────────────────────────────
+
+restricted_zones:
+
+  # ── AIRPORT BUFFER ZONES ─────────────────────────────────
+
+  - name: "Pune Airport — Primary Exclusion Zone"
+    type: airport
+    hard_block: true
+    shape: circle
+    center: [18.5822, 73.9197]   # Pune Airport (Lohegaon)
+    radius_m: 5000               # 5km radius — DGCA mandated no-fly
+    active_from: ""
+    active_until: ""
+    notes: "DGCA mandated 5km no-fly radius around Pune Airport"
+
+  - name: "Pune Airport — Extended Caution Zone"
+    type: airport
+    hard_block: false            # soft block — high cost, not impossible
+    shape: circle
+    center: [18.5822, 73.9197]
+    radius_m: 8000               # 5–8km: caution zone
+    active_from: ""
+    active_until: ""
+    notes: "Extended caution buffer 5–8km from airport"
+
+  # ── MILITARY / SENSITIVE AREAS ────────────────────────────
+
+  - name: "Pune Cantonment"
+    type: military
+    hard_block: true
+    shape: polygon
+    polygon:
+      - [18.5100, 73.8750]
+      - [18.5100, 73.8950]
+      - [18.5250, 73.8950]
+      - [18.5250, 73.8750]
+    active_from: ""
+    active_until: ""
+    notes: "Pune Cantonment area — military restricted airspace"
+
+  - name: "Southern Command HQ"
+    type: military
+    hard_block: true
+    shape: circle
+    center: [18.5197, 73.8553]
+    radius_m: 1000
+    active_from: ""
+    active_until: ""
+    notes: "Army Southern Command headquarters"
+
+  - name: "Khadki Ammunition Depot"
+    type: military
+    hard_block: true
+    shape: circle
+    center: [18.5680, 73.8420]
+    radius_m: 2000
+    active_from: ""
+    active_until: ""
+    notes: "Khadki ordnance and ammunition area"
+
+  # ── CUSTOM NO-FLY POLYGONS ────────────────────────────────
+
+  - name: "Raj Bhavan (Governor's Residence)"
+    type: custom
+    hard_block: true
+    shape: circle
+    center: [18.5236, 73.8324]
+    radius_m: 500
+    active_from: ""
+    active_until: ""
+    notes: "VIP security — no drone flight permitted"
+
+  - name: "Shivajinagar Court Complex"
+    type: custom
+    hard_block: true
+    shape: circle
+    center: [18.5308, 73.8474]
+    radius_m: 300
+    active_from: ""
+    active_until: ""
+    notes: "Sensitive government premises"
+
+  - name: "Osho Ashram Koregaon Park"
+    type: custom
+    hard_block: false            # soft — avoid but not hard blocked
+    shape: circle
+    center: [18.5390, 73.9012]
+    radius_m: 400
+    active_from: ""
+    active_until: ""
+    notes: "Privacy-sensitive area — avoid overflying"
+
+  # ── TEMPORARY ZONES ───────────────────────────────────────
+  # These are examples — update dates as needed
+
+  - name: "Example — Pune Marathon Event"
+    type: temporary
+    hard_block: true
+    shape: polygon
+    polygon:
+      - [18.5200, 73.8550]
+      - [18.5200, 73.8650]
+      - [18.5300, 73.8650]
+      - [18.5300, 73.8550]
+    active_from: "2026-01-15 06:00"
+    active_until: "2026-01-15 14:00"
+    notes: "Temporary no-fly during marathon — example entry"
+
+  - name: "Example — VIP Visit Buffer"
+    type: temporary
+    hard_block: true
+    shape: circle
+    center: [18.5195, 73.8554]
+    radius_m: 2000
+    active_from: "2026-02-01 08:00"
+    active_until: "2026-02-01 20:00"
+    notes: "Temporary VIP security zone — example entry"
